@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"golang-interview/database"
+	"golang-interview/routes"
 	"log"
 	"net/http"
 
@@ -19,8 +20,7 @@ func main() {
 	defer database.DB.Close()
 
 	mux := http.NewServeMux()
-	// mux := http.NewServeMux()
-	// routes.CategoryRoutes(mux)
+	routes.CategoryRoutes(mux)
 
 	fmt.Println("Server running at http://localhost:8000")
 	err = http.ListenAndServe(":8000", mux)
