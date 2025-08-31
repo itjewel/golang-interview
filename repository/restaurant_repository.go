@@ -45,7 +45,7 @@ ID    int     `json:"id"`
 
 func (r *RestaurantRepository) GetAllPurchaseHistory(req models.PurchaseHistory) ([]models.PurchaseHistory, error) {
 
-    rows, err := database.DB.Query(`SELECT purchase_history.id,restaurant_menu.name as menuname, purchase_history.price, restaurant.name AS restaurantname, users.name AS username, users.balance
+    rows, err := database.DB.Query(`SELECT purchase_history.id,restaurant_menu.name as menuname, purchase_history.price, restaurant.name AS restaurantname, users.name AS username, users.balance as userBalance, restaurant.balance as rasturantBalance
     FROM purchase_history
     LEFT JOIN restaurant ON restaurant.id = purchase_history.res_id
     LEFT JOIN restaurant_menu ON purchase_history.res_id = restaurant_menu.id
@@ -63,7 +63,7 @@ func (r *RestaurantRepository) GetAllPurchaseHistory(req models.PurchaseHistory)
     for rows.Next() {
         var c models.PurchaseHistory
         // Adjust scan to include the restaurantName and userName
-        if err := rows.Scan(&c.ID,&c.MenuName,&c.Price,&c.RestaurantName,&c.UserName,&c.UserBalance); err != nil {
+        if err := rows.Scan(&c.ID,&c.MenuName,&c.Price,&c.RestaurantName,&c.UserName,&c.UserBalance,&c.RestaurantBalance); err != nil {
 			fmt.Println("scan error",err.Error())
             continue // Optionally log the error here for debugging
         }
@@ -88,6 +88,16 @@ func (r *RestaurantRepository) PurchaseOrder(c models.PurchaseHistory) (int64, e
    currentBalance := arrayData.UserBalance  - c.Price
    _, err := database.DB.Exec("UPDATE users SET balance = ? WHERE id = ?", currentBalance, c.UserId)
 	if err != nil {
+		return 0, err
+	}
+
+   if err  := database.DB.QueryRow(`SELECT balance FROM restaurant WHERE id = ?`,c.UserId).Scan(&arrayData.RestaurantBalance); err !=nil {
+	return 0, err
+   }
+
+	restaurantBalance := arrayData.RestaurantBalance  + c.Price
+   _, error := database.DB.Exec("UPDATE restaurant SET balance = ? WHERE id = ?", restaurantBalance, c.ResId)
+	if error != nil {
 		return 0, err
 	}
 	

@@ -10,7 +10,7 @@ type RestaurantMenu struct {
 	ID    int     `json:"id"`
 	ResId    int     `json:"resId"`
 	Name  string  `json:"name"`
-	Price float64 `json:"price"`
+	Balance float64 `json:"balance"`
 }
 
 type User struct {
@@ -29,6 +29,7 @@ type PurchaseHistory struct {
 	RestaurantName string `json:"restaurantName" db:"resturantname"`
     UserName  string  `json:"userName" db:"username"`
     UserBalance  float64  `json:"userBalance" db:"balance"`
+    RestaurantBalance  float64  `json:"RestaurantBalance" db:"balance"`
 	MenuName string `json:"menuName" db:"menuname"`
 }
 
