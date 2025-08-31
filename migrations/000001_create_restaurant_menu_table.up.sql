@@ -1,0 +1,7 @@
+CREATE TABLE restaurant_menu (
+id INT AUTO_INCREMENT PRIMARY KEY,
+res_id INT,
+name VARCHAR(255) NULL,
+price VARCHAR(255) NOT NULL DEFAULT "10.00",
+-- FOREIGN KEY (res_id) REFERENCES restaurant(id)
+);

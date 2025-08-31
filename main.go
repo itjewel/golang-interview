@@ -20,7 +20,7 @@ func main() {
 	defer database.DB.Close()
 
 	mux := http.NewServeMux()
-	routes.CategoryRoutes(mux)
+	routes.RestaurantRoutes(mux)
 
 	fmt.Println("Server running at http://localhost:8000")
 	err = http.ListenAndServe(":8000", mux)

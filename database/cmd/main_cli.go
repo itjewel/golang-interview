@@ -13,6 +13,6 @@ func main() {
 	}
 
 	database.Connect()
-	// filename := os.Args[1]
-	// database.RunMigration(filename)
+	 filename := os.Args[1]
+	 database.RunMigration(filename)
 }
